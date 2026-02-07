@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>For You ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle, #ff4d6d, #b3003b);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Georgia', serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .rose {
+      position: absolute;
+      font-size: 30px;
+      opacity: 0.8;
+      animation-name: float;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      will-change: transform;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh);
+      }
+      100% {
+        transform: translateY(-10vh);
+      }
+    }
+
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      max-width: 350px;
+      text-align: center;
+      z-index: 10;
+      position: relative;
+    }
+
+    .card h1 {
+      color: #d10047;
+      margin-bottom: 15px;
+    }
+
+    .card p {
+      font-size: 18px;
+      color: #333;
+      line-height: 1.5;
+    }
+
+    .heart {
+      font-size: 30px;
+      margin-top: 15px;
+      color: #ff1a4b;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>My Love ❤️</h1>
+    <p>
+      I promise to give you rozz,<br />
+      every smile, every effort,<br />
+      every bit of love I have.<br /><br />
+      You mean everything to me.
+    </p>
+    <div class="heart" aria-hidden="true">🌹🌹🌹</div>
+  </div>
+
+  <script>
+    const rosesCount = 40;
+    // Card occupies roughly centered 350px, vertically centered
+    // Let's restrict rose horizontal positions to outside card area approximately:
+    // 350px card width means about 350 / window.innerWidth fraction is reserved in center.
+    // We'll keep roses either in 0 - leftEdge or rightEdge - 100vw range.
+
+    const cardWidthPx = 350;
+    const screenWidthPx = window.innerWidth;
+    const cardLeft = (screenWidthPx - cardWidthPx) / 2;
+    const cardRight = cardLeft + cardWidthPx;
+    const roseSizeVW = (30 / screenWidthPx) * 100; // approx font size in vw
+
+    for (let i = 0; i < rosesCount; i++) {
+      const rose = document.createElement("div");
+      rose.className = "rose";
+      rose.innerText = "🌹";
+      rose.setAttribute("role", "img");
+      rose.setAttribute("aria-label", "Rose emoji");
+
+      // Randomly choose to place rose on the left side or right side (50/50)
+      let leftVW;
+      if (Math.random() < 0.5) {
+        // left side: from 0vw to just before card left position
+        const leftMaxVW = (cardLeft / screenWidthPx) * 100;
+        leftVW = Math.random() * Math.max(0, leftMaxVW - roseSizeVW);
+      } else {
+        // right side: from card right position to 100vw
+        const rightMinVW = (cardRight / screenWidthPx) * 100;
+        leftVW = rightMinVW + Math.random() * (100 - rightMinVW - roseSizeVW);
+      }
+      rose.style.left = `${leftVW}vw`;
+
+      // Duration between 5-10 seconds
+      const duration = 5 + Math.random() * 5;
+      rose.style.animationDuration = `${duration}s`;
+
+      // Staggered animation delay so roses float continuously without bunching
+      rose.style.animationDelay = `${Math.random() * duration}s`;
+
+      document.body.appendChild(rose);
+    }
+  </script>
+
+</body>
+</html>
