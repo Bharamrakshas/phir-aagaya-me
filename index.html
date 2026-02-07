@@ -88,28 +88,23 @@
 
 <script>
   const rosesCount = 70;
-  // Transparent PNG rose image URL (valid and publicly hosted)
-  const roseImageSrc = "https://raw.githubusercontent.com/mdn/web-demos/main/css-examples/floating-particles/red-rose.png";
+  const roseImageSrc = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Rose_flower_in_red_on_white_background.png/120px-Rose_flower_in_red_on_white_background.png";
 
   for (let i = 0; i < rosesCount; i++) {
     const rose = document.createElement("img");
     rose.src = roseImageSrc;
     rose.alt = "Red rose";
     rose.classList.add("rose-image");
-    
-    // Random horizontal position within viewport width (5% to 95%)
+
     rose.style.left = `${5 + Math.random() * 90}vw`;
 
-    // Random scaling for variety (0.3x to 0.7x)
     const scale = 0.3 + Math.random() * 0.4;
     rose.style.setProperty('--scale', scale);
-    rose.style.width = `${scale * 120}px`; // base approx width 120 px
+    rose.style.width = `${scale * 120}px`;
 
-    // Random animation duration from 8s to 15s
     const duration = 8 + Math.random() * 7;
     rose.style.animationDuration = `${duration}s`;
 
-    // Random animation delay to stagger animations
     rose.style.animationDelay = `${Math.random() * duration}s`;
 
     document.body.appendChild(rose);
