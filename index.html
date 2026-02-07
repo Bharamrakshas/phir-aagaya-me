@@ -18,20 +18,22 @@
 
     .rose {
       position: absolute;
-      font-size: 30px;
       opacity: 0.8;
       animation-name: float;
       animation-timing-function: linear;
       animation-iteration-count: infinite;
       will-change: transform;
+      user-select: none;
+      pointer-events: none;
+      /* Font size will be set dynamically */
     }
 
     @keyframes float {
       0% {
-        transform: translateY(100vh);
+        transform: translateY(110vh);
       }
       100% {
-        transform: translateY(-10vh);
+        transform: translateY(-15vh);
       }
     }
 
@@ -66,11 +68,11 @@
 </head>
 <body>
 
-  <div class="card">
+  <div class="card" aria-label="Love message">
     <h1>My Love ❤️</h1>
     <p>
       Here are some Roses for you,<br />
-      But I also can also promise to give you rozz iykyk,<br />
+      But I can also promise to give you rozz iykyk,<br />
       more smiles, more efforts,<br />
       every bit of love I have is for you.<br /><br />
       You mean everything to me.
@@ -79,17 +81,11 @@
   </div>
 
   <script>
-    const rosesCount = 40;
-    // Card occupies roughly centered 350px, vertically centered
-    // Let's restrict rose horizontal positions to outside card area approximately:
-    // 350px card width means about 350 / window.innerWidth fraction is reserved in center.
-    // We'll keep roses either in 0 - leftEdge or rightEdge - 100vw range.
-
+    const rosesCount = 80;  // increase number of roses to fill screen better
     const cardWidthPx = 350;
     const screenWidthPx = window.innerWidth;
     const cardLeft = (screenWidthPx - cardWidthPx) / 2;
     const cardRight = cardLeft + cardWidthPx;
-    const roseSizeVW = (30 / screenWidthPx) * 100; // approx font size in vw
 
     for (let i = 0; i < rosesCount; i++) {
       const rose = document.createElement("div");
@@ -98,24 +94,19 @@
       rose.setAttribute("role", "img");
       rose.setAttribute("aria-label", "Rose emoji");
 
-      // Randomly choose to place rose on the left side or right side (50/50)
-      let leftVW;
-      if (Math.random() < 0.5) {
-        // left side: from 0vw to just before card left position
-        const leftMaxVW = (cardLeft / screenWidthPx) * 100;
-        leftVW = Math.random() * Math.max(0, leftMaxVW - roseSizeVW);
-      } else {
-        // right side: from card right position to 100vw
-        const rightMinVW = (cardRight / screenWidthPx) * 100;
-        leftVW = rightMinVW + Math.random() * (100 - rightMinVW - roseSizeVW);
-      }
-      rose.style.left = `${leftVW}vw`;
+      // Random font size between 30px and 70px for bigger roses
+      const fontSize = 30 + Math.random() * 40;
+      rose.style.fontSize = `${fontSize}px`;
 
-      // Duration between 5-10 seconds
-      const duration = 5 + Math.random() * 5;
+      // Randomly choose left position across *the whole viewport*, 
+      // allowing roses to float even behind the card for fullness
+      rose.style.left = `${Math.random() * 100}vw`;
+
+      // Duration between 6s to 12s for a bit slower and varied animation
+      const duration = 6 + Math.random() * 6;
       rose.style.animationDuration = `${duration}s`;
 
-      // Staggered animation delay so roses float continuously without bunching
+      // Staggered delay for continuous flow
       rose.style.animationDelay = `${Math.random() * duration}s`;
 
       document.body.appendChild(rose);
